@@ -11,5 +11,5 @@ add_executable(brainfucked ${SOURCES})
 
 target_precompile_headers(brainfucked
   PUBLIC src/brainfucked.hpp 
-  PRIVATE <iostream>
+  PRIVATE <iostream> <vector>
 )
