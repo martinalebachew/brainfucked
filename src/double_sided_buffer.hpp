@@ -10,8 +10,8 @@ typedef unsigned char byte;
 
 class DoubleSidedBuffer {
 private:
-  int *positiveMemoryTape;
-  int *negativeMemoryTape; // Includes zero index
+  byte *positiveMemoryTape;
+  byte *negativeMemoryTape; // Includes zero index
   int positiveMemorySize; // Element count
   int negativeMemorySize; // Element count
 
@@ -21,6 +21,6 @@ public:
   DoubleSidedBuffer();
   ~DoubleSidedBuffer();
 
-  int getCurrentValue();
-  void setCurrentValue(int value);
+  byte getCurrentValue();
+  void setCurrentValue(byte value);
 };

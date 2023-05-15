@@ -4,8 +4,8 @@
 #include "double_sided_buffer.hpp"
 
 DoubleSidedBuffer::DoubleSidedBuffer() : currentCell(0), positiveMemorySize(tapeInitialSize), negativeMemorySize(tapeInitialSize) {
-  positiveMemoryTape = (int*)calloc(tapeInitialSize, sizeof(int));
-  positiveMemoryTape = (int*)calloc(tapeInitialSize, sizeof(int));
+  positiveMemoryTape = (byte*)calloc(tapeInitialSize, sizeof(byte));
+  positiveMemoryTape = (byte*)calloc(tapeInitialSize, sizeof(byte));
 }
 
 DoubleSidedBuffer::~DoubleSidedBuffer() {
@@ -13,7 +13,7 @@ DoubleSidedBuffer::~DoubleSidedBuffer() {
   free(negativeMemoryTape);
 }
 
-int DoubleSidedBuffer::getCurrentValue() {
+byte DoubleSidedBuffer::getCurrentValue() {
   if (currentCell) { // Positive tape
     if (currentCell >= positiveMemorySize) return 0; // If tape is too small, return zero
     return positiveMemoryTape[currentCell]; // Else return current cell value
@@ -24,12 +24,12 @@ int DoubleSidedBuffer::getCurrentValue() {
   }
 }
 
-void DoubleSidedBuffer::setCurrentValue(int value) {
+void DoubleSidedBuffer::setCurrentValue(byte value) {
   if (currentCell) { // Positive tape
     if (currentCell >= positiveMemorySize) {
       // If tape is too small, expand it
       int newMemorySize = (currentCell + 1) * 1.5;
-      positiveMemoryTape = (int*)realloc(positiveMemoryTape, newMemorySize);
+      positiveMemoryTape = (byte*)realloc(positiveMemoryTape, newMemorySize);
 
       // Zero only new cells, except for the first new one
       memset(positiveMemoryTape + positiveMemorySize + 1, 0, newMemorySize - positiveMemorySize - 1);
@@ -41,7 +41,7 @@ void DoubleSidedBuffer::setCurrentValue(int value) {
     if ((currentCell * -1) >= negativeMemorySize) {
       // If tape is too small, expand it
       int newMemorySize = ((currentCell * -1) + 1) * 1.5;
-      negativeMemoryTape = (int*)realloc(negativeMemoryTape, newMemorySize);
+      negativeMemoryTape = (byte*)realloc(negativeMemoryTape, newMemorySize);
 
       // Zero only new cells, except for the first new one
       memset(negativeMemoryTape + negativeMemorySize + 1, 0, newMemorySize - negativeMemorySize - 1);
