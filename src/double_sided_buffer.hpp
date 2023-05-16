@@ -3,6 +3,7 @@
 
 #pragma once
 #include <vector>
+#include <iostream>
 
 constexpr int tapeInitialSize = 5;
 
@@ -23,4 +24,5 @@ public:
 
   const byte getCurrentValue() const;
   void setCurrentValue(byte value);
+  void showTape() const;
 };

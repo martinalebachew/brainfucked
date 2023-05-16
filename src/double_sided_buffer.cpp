@@ -50,3 +50,57 @@ void DoubleSidedBuffer::setCurrentValue(byte value) {
     negativeMemoryTape[currentCell * -1] = value; // Set current cell value
   }
 }
+
+std::string operator *(std::string rep, unsigned int n) {
+    std::string output = "";
+    while (n--) {
+        output += rep;
+    }
+
+    return output;
+}
+
+void DoubleSidedBuffer::showTape() const {
+  constexpr int minPadding = 2;
+  constexpr int cellLength = 3 + minPadding; // Modify the padding above, not this value!
+
+  int tapeLength = negativeMemorySize + positiveMemorySize;
+  std::string seperators = " " + std::string("-") * (cellLength);
+  seperators = seperators * tapeLength;
+
+  std::string values, indexes = " ";
+  for (int i = negativeMemorySize - 1; i >= 0 ; i--) {
+    std::string valueString = std::to_string(negativeMemoryTape[i]);
+    int valueLength = valueString.length();
+    int paddingBefore = (cellLength - valueLength) / 2;
+    int paddingAfter = cellLength - valueLength - paddingBefore;
+    values += "|" + ((std::string)" " * paddingBefore) + valueString + ((std::string)" " * paddingAfter);
+
+    std::string indexString = std::to_string(i * -1);
+    int indexLength = indexString.length();
+    paddingBefore = (cellLength - indexLength) / 2;
+    paddingAfter = cellLength - valueLength - paddingBefore;
+    indexes += ((std::string)" " * (paddingBefore + 1)) + indexString + ((std::string)" " * paddingAfter);
+  }
+
+  for (int i = 0; i < positiveMemorySize; i++) {
+    std::string valueString = std::to_string(positiveMemoryTape[i]);
+    int valueLength = valueString.length();
+    int paddingBefore = (cellLength - valueLength) / 2;
+    int paddingAfter = cellLength - valueLength - paddingBefore;
+    values += "|" + ((std::string)" " * paddingBefore) + valueString + ((std::string)" " * paddingAfter);
+
+    std::string indexString = std::to_string(i + 1);
+    int indexLength = indexString.length();
+    paddingBefore = ((cellLength + 1) - indexLength) / 2;
+    paddingAfter = (cellLength + 1) - valueLength - paddingBefore;
+    indexes += ((std::string)" " * paddingBefore) + indexString + ((std::string)" " * paddingAfter);
+  }
+
+  values += "|";
+
+  std::cout << seperators << std::endl;
+  std::cout << values << std::endl;
+  std::cout << seperators << std::endl;
+  std::cout << indexes << std::endl;
+}
