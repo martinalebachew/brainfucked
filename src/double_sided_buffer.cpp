@@ -79,8 +79,8 @@ void DoubleSidedBuffer::showTape() const {
     std::string indexString = std::to_string(i * -1);
     int indexLength = indexString.length();
     paddingBefore = (cellLength - indexLength) / 2;
-    paddingAfter = cellLength - valueLength - paddingBefore;
-    indexes += ((std::string)" " * (paddingBefore + 1)) + indexString + ((std::string)" " * paddingAfter);
+    paddingAfter = cellLength - indexLength - paddingBefore + 1;
+    indexes += ((std::string)" " * paddingBefore) + indexString + ((std::string)" " * paddingAfter);
   }
 
   for (int i = 0; i < positiveMemorySize; i++) {
@@ -92,8 +92,8 @@ void DoubleSidedBuffer::showTape() const {
 
     std::string indexString = std::to_string(i + 1);
     int indexLength = indexString.length();
-    paddingBefore = ((cellLength + 1) - indexLength) / 2;
-    paddingAfter = (cellLength + 1) - valueLength - paddingBefore;
+    paddingBefore = (cellLength - indexLength) / 2;
+    paddingAfter = cellLength - indexLength - paddingBefore + 1;
     indexes += ((std::string)" " * paddingBefore) + indexString + ((std::string)" " * paddingAfter);
   }
 
