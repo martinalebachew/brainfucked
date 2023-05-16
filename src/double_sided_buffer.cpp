@@ -99,8 +99,13 @@ void DoubleSidedBuffer::showTape() const {
 
   values += "|";
 
+  int passedCells = currentCell + negativeMemorySize - 1;
+  int arrowLocation = 1 + passedCells * (cellLength + 1) + cellLength * 0.5;
+  std::string pointerArrow = std::string(" ") * arrowLocation + "^";
+
   std::cout << seperators << std::endl;
   std::cout << values << std::endl;
   std::cout << seperators << std::endl;
   std::cout << indexes << std::endl;
+  std::cout << pointerArrow << std::endl << std::endl;
 }
