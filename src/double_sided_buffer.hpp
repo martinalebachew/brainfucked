@@ -21,6 +21,6 @@ public:
   DoubleSidedBuffer();
   ~DoubleSidedBuffer();
 
-  byte getCurrentValue();
+  const byte getCurrentValue() const;
   void setCurrentValue(byte value);
 };
