@@ -99,10 +99,21 @@ void DoubleSidedTape::showTape() const {
 
   values += "|";
 
-  int passedCells = currentCell + negativeMemorySize - 1;
-  int arrowLocation = 1 + passedCells * (cellLength + 1) + cellLength * 0.5;
-  
-  std::string pointerArrow = std::string(" ") * arrowLocation + "^";
+  std::string pointerArrow;
+  if (currentCell > positiveMemorySize) {
+    // If cell is positively out of bounds
+    int totalTapeSize = negativeMemorySize + positiveMemorySize;
+    int arrowLocation = totalTapeSize * (cellLength + 1);
+    pointerArrow = (std::string)" " * arrowLocation + "(" + std::to_string(currentCell) + ") -->";
+  } else if ((currentCell * -1) >= negativeMemorySize) {
+    // If cell is negatively out of bounds
+    pointerArrow = "<-- (" + std::to_string(currentCell) + ")";
+  } else {
+    // If cell is in bounds
+    int passedCells = currentCell + negativeMemorySize - 1;
+    int arrowLocation = 1 + passedCells * (cellLength + 1) + cellLength * 0.5;
+    pointerArrow = std::string(" ") * arrowLocation + "^";
+  };
 
   std::cout << seperators << std::endl;
   std::cout << values << std::endl;
