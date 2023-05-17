@@ -1,19 +1,19 @@
-// double_sided_buffer.cpp
+// memory_tape.cpp
 // (C) Martin Alebachew, 2023
 
-#include "double_sided_buffer.hpp"
+#include "memory_tape.hpp"
 
-DoubleSidedBuffer::DoubleSidedBuffer() : currentCell(0), positiveMemorySize(tapeInitialSize), negativeMemorySize(tapeInitialSize) {
+DoubleSidedTape::DoubleSidedTape() : currentCell(0), positiveMemorySize(tapeInitialSize), negativeMemorySize(tapeInitialSize) {
   positiveMemoryTape = (byte*)calloc(tapeInitialSize, sizeof(byte));
   negativeMemoryTape = (byte*)calloc(tapeInitialSize, sizeof(byte));
 }
 
-DoubleSidedBuffer::~DoubleSidedBuffer() {
+DoubleSidedTape::~DoubleSidedTape() {
   free(positiveMemoryTape);
   free(negativeMemoryTape);
 }
 
-const byte DoubleSidedBuffer::getCurrentValue() const {
+const byte DoubleSidedTape::getCurrentValue() const {
   if (currentCell > 0) { // Positive tape
     if (currentCell > positiveMemorySize) return 0; // If tape is too small, return zero
     return positiveMemoryTape[currentCell - 1]; // Else return current cell value
@@ -24,7 +24,7 @@ const byte DoubleSidedBuffer::getCurrentValue() const {
   }
 }
 
-void DoubleSidedBuffer::setCurrentValue(byte value) {
+void DoubleSidedTape::setCurrentValue(byte value) {
   if (currentCell > 0) { // Positive tape
     if (currentCell > positiveMemorySize) {
       // If tape is too small, expand it
@@ -60,7 +60,7 @@ std::string operator *(std::string rep, unsigned int n) {
     return output;
 }
 
-void DoubleSidedBuffer::showTape() const {
+void DoubleSidedTape::showTape() const {
   constexpr int minPadding = 2;
   constexpr int cellLength = 3 + minPadding; // Modify the padding above, not this value!
 
@@ -101,6 +101,7 @@ void DoubleSidedBuffer::showTape() const {
 
   int passedCells = currentCell + negativeMemorySize - 1;
   int arrowLocation = 1 + passedCells * (cellLength + 1) + cellLength * 0.5;
+  
   std::string pointerArrow = std::string(" ") * arrowLocation + "^";
 
   std::cout << seperators << std::endl;

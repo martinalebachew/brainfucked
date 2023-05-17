@@ -1,4 +1,4 @@
-// double_sided_buffer.hpp
+// memory_tape.hpp
 // (C) Martin Alebachew, 2023
 
 #pragma once
@@ -9,7 +9,7 @@ constexpr int tapeInitialSize = 5;
 
 typedef unsigned char byte;
 
-class DoubleSidedBuffer {
+class DoubleSidedTape {
 private:
   byte *positiveMemoryTape;
   byte *negativeMemoryTape; // Includes zero index
@@ -19,8 +19,8 @@ private:
 public:
   int currentCell; // Zero-based index
 
-  DoubleSidedBuffer();
-  ~DoubleSidedBuffer();
+  DoubleSidedTape();
+  ~DoubleSidedTape();
 
   const byte getCurrentValue() const;
   void setCurrentValue(byte value);
