@@ -28,7 +28,7 @@ void DoubleSidedTape::setCurrentValue(byte value) {
   if (currentCell > 0) { // Positive tape
     if (currentCell > positiveMemorySize) {
       // If tape is too small, expand it
-      int newMemorySize = currentCell * 1.5;
+      int newMemorySize = currentCell * 1.2;
       positiveMemoryTape = (byte*)realloc(positiveMemoryTape, newMemorySize);
 
       // Zero only new cells, except for the first new one
@@ -40,7 +40,7 @@ void DoubleSidedTape::setCurrentValue(byte value) {
   } else { // Negative tape / zero index
     if ((currentCell * -1) >= negativeMemorySize) {
       // If tape is too small, expand it
-      int newMemorySize = ((currentCell * -1) + 1) * 1.5;
+      int newMemorySize = ((currentCell * -1) + 1) * 1.2;
       negativeMemoryTape = (byte*)realloc(negativeMemoryTape, newMemorySize);
 
       // Zero only new cells, except for the first new one
