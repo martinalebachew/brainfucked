@@ -15,6 +15,7 @@ private:
   byte *negativeMemoryTape; // Includes zero index
   int positiveMemorySize; // Element count
   int negativeMemorySize; // Element count
+  void showTapeImpl(int from, int to) const;
 
 public:
   int currentCell; // Zero-based index

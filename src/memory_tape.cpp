@@ -60,37 +60,39 @@ std::string operator *(std::string rep, unsigned int n) {
     return output;
 }
 
-void DoubleSidedTape::showTape() const {
+void DoubleSidedTape::showTapeImpl(int from, int to) const {
+  // Checking bounds is not a responsibility of this method!
+
   constexpr int minPadding = 2;
   constexpr int cellLength = 3 + minPadding; // Modify the padding above, not this value!
 
-  int tapeLength = negativeMemorySize + positiveMemorySize;
+  int tapeLength = to - from + 1;
   std::string seperators = " " + std::string("-") * (cellLength);
   seperators = seperators * tapeLength;
 
   std::string values, indexes = " ";
-  for (int i = negativeMemorySize - 1; i >= 0 ; i--) {
-    std::string valueString = std::to_string(negativeMemoryTape[i]);
+  for (int i = from; i <= std::min(0, to) ; i++) {
+    std::string valueString = std::to_string(negativeMemoryTape[i * -1]);
     int valueLength = valueString.length();
     int paddingBefore = (cellLength - valueLength) / 2;
     int paddingAfter = cellLength - valueLength - paddingBefore;
     values += "|" + ((std::string)" " * paddingBefore) + valueString + ((std::string)" " * paddingAfter);
 
-    std::string indexString = std::to_string(i * -1);
+    std::string indexString = std::to_string(i);
     int indexLength = indexString.length();
     paddingBefore = (cellLength - indexLength) / 2;
     paddingAfter = cellLength - indexLength - paddingBefore + 1;
     indexes += ((std::string)" " * paddingBefore) + indexString + ((std::string)" " * paddingAfter);
   }
 
-  for (int i = 0; i < positiveMemorySize; i++) {
-    std::string valueString = std::to_string(positiveMemoryTape[i]);
+  for (int i = std::max(1, from); i <= to; i++) {
+    std::string valueString = std::to_string(positiveMemoryTape[i - 1]);
     int valueLength = valueString.length();
     int paddingBefore = (cellLength - valueLength) / 2;
     int paddingAfter = cellLength - valueLength - paddingBefore;
     values += "|" + ((std::string)" " * paddingBefore) + valueString + ((std::string)" " * paddingAfter);
 
-    std::string indexString = std::to_string(i + 1);
+    std::string indexString = std::to_string(i);
     int indexLength = indexString.length();
     paddingBefore = (cellLength - indexLength) / 2;
     paddingAfter = cellLength - indexLength - paddingBefore + 1;
@@ -100,24 +102,38 @@ void DoubleSidedTape::showTape() const {
   values += "|";
 
   std::string pointerArrow;
-  if (currentCell > positiveMemorySize) {
-    // If cell is positively out of bounds
+  if (currentCell > to) {
+    // If cell is out of bounds to the right
     int totalTapeSize = negativeMemorySize + positiveMemorySize;
-    int arrowLocation = totalTapeSize * (cellLength + 1);
-    pointerArrow = (std::string)" " * arrowLocation + "(" + std::to_string(currentCell) + ") -->";
-  } else if ((currentCell * -1) >= negativeMemorySize) {
-    // If cell is negatively out of bounds
+    pointerArrow = "(" + std::to_string(currentCell) + ") -->";
+  } else if (currentCell < from) {
+    // If cell is out of bounds to the left
     pointerArrow = "<-- (" + std::to_string(currentCell) + ")";
   } else {
     // If cell is in bounds
-    int passedCells = currentCell + negativeMemorySize - 1;
+    int passedCells = currentCell - from;
     int arrowLocation = 1 + passedCells * (cellLength + 1) + cellLength * 0.5;
     pointerArrow = std::string(" ") * arrowLocation + "^";
-  };
+  }
 
   std::cout << seperators << std::endl;
   std::cout << values << std::endl;
   std::cout << seperators << std::endl;
   std::cout << indexes << std::endl;
   std::cout << pointerArrow << std::endl << std::endl;
+}
+
+void DoubleSidedTape::showTape() const {
+  constexpr int cellsInLine = 20;
+  int first = negativeMemorySize * -1 + 1;
+  int last = first + cellsInLine - 1;
+
+  while (last <= positiveMemorySize) {
+    showTapeImpl(first, last);
+    first = last + 1;
+    last += cellsInLine;
+  }
+
+  // Print last range
+  if (first <= positiveMemorySize) showTapeImpl(first, positiveMemorySize);
 }
